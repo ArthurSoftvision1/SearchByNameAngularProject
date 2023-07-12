@@ -2,14 +2,25 @@
   <h1>Table with Search by Name</h1>
 
   <div class="input-group my-2 w-25">
-    <input id="example-search-input" class="form-control border rounded-pill" type="search" [(ngModel)]="searchQuery" (input)="filterTable()" placeholder="Search by name">
+    <input
+      id="example-search-input"
+      class="form-control border rounded-pill"
+      type="search"
+      [(ngModel)]="searchQuery"
+      (input)="filterTable()"
+      placeholder="Search by name"
+    />
   </div>
 
   <table class="table table-hover">
     <thead>
       <tr>
         <th appColumnResize>
-          <input type="checkbox" [(ngModel)]="selectAllRows" (change)="toggleSelectAll()">
+          <input
+            type="checkbox"
+            [(ngModel)]="selectAllRows"
+            (change)="toggleSelectAll()"
+          />
         </th>
         <th appColumnResize>Name</th>
         <th appColumnResize>Type</th>
@@ -20,15 +31,31 @@
     </thead>
     <tbody>
       <ng-container *ngFor="let item of filteredData">
-        <tr (mouseover)="item.showButtons = true" (mouseout)="item.showButtons = false">
+        <tr
+          (mouseover)="item.showButtons = true"
+          (mouseout)="item.showButtons = false"
+        >
           <td>
-            <input type="checkbox" [(ngModel)]="item.selected">
+            <input type="checkbox" [(ngModel)]="item.selected" />
           </td>
           <td>
             <span [class.expanded]="item.expanded" class="arrow-icon"></span>
             {{ item.name }}
-            <svg *ngIf="item.children" (click)="toggleRow(item); icon.classList.toggle('expanded')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16" #icon>
-              <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+            <svg
+              *ngIf="item.children"
+              (click)="toggleRow(item); icon.classList.toggle('expanded')"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-right-short"
+              viewBox="0 0 16 16"
+              #icon
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"
+              />
             </svg>
           </td>
           <td>{{ item.type }}</td>
@@ -49,7 +76,11 @@
                 <thead>
                   <tr>
                     <th appColumnResize>
-                      <input type="checkbox" [(ngModel)]="selectAllRows" (change)="toggleSelectAll()">
+                      <input
+                        type="checkbox"
+                        [(ngModel)]="selectAllRows"
+                        (change)="toggleSelectAll()"
+                      />
                     </th>
                     <th appColumnResize>Name</th>
                     <th appColumnResize>Type</th>
@@ -60,15 +91,40 @@
                 </thead>
                 <tbody>
                   <ng-container *ngFor="let nestedChild of item.children">
-                    <tr (mouseover)="nestedChild.showButtons = true" (mouseout)="nestedChild.showButtons = false">
+                    <tr
+                      (mouseover)="nestedChild.showButtons = true"
+                      (mouseout)="nestedChild.showButtons = false"
+                    >
                       <td>
-                        <input type="checkbox" [(ngModel)]="nestedChild.selected">
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="nestedChild.selected"
+                        />
                       </td>
                       <td>
-                        <span [class.expanded]="nestedChild.expanded" class="arrow-icon"></span>
+                        <span
+                          [class.expanded]="nestedChild.expanded"
+                          class="arrow-icon"
+                        ></span>
                         {{ nestedChild.name }}
-                        <svg *ngIf="nestedChild.children" (click)="toggleRow(nestedChild); icon.classList.toggle('expanded')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16" #icon>
-                          <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+                        <svg
+                          *ngIf="nestedChild.children"
+                          (click)="
+                            toggleRow(nestedChild);
+                            icon.classList.toggle('expanded')
+                          "
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-arrow-right-short"
+                          viewBox="0 0 16 16"
+                          #icon
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"
+                          />
                         </svg>
                       </td>
                       <td>{{ nestedChild.type }}</td>
@@ -81,14 +137,24 @@
                         </div>
                       </td>
                     </tr>
-                    <tr *ngIf="nestedChild.expanded && nestedChild.children && nestedChild.children.length > 0">
+                    <tr
+                      *ngIf="
+                        nestedChild.expanded &&
+                        nestedChild.children &&
+                        nestedChild.children.length > 0
+                      "
+                    >
                       <td colspan="7">
                         <div class="nested-table">
                           <table class="table table-bordered">
                             <thead>
                               <tr>
                                 <th>
-                                  <input type="checkbox" [(ngModel)]="selectAllRows" (change)="toggleSelectAll()">
+                                  <input
+                                    type="checkbox"
+                                    [(ngModel)]="selectAllRows"
+                                    (change)="toggleSelectAll()"
+                                  />
                                 </th>
                                 <th appColumnResize>Name</th>
                                 <th appColumnResize>Type</th>
@@ -98,10 +164,15 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <ng-container *ngFor="let innerChild of nestedChild.children">
+                              <ng-container
+                                *ngFor="let innerChild of nestedChild.children"
+                              >
                                 <tr>
                                   <td>
-                                    <input type="checkbox" [(ngModel)]="innerChild.selected">
+                                    <input
+                                      type="checkbox"
+                                      [(ngModel)]="innerChild.selected"
+                                    />
                                   </td>
                                   <td>{{ innerChild.name }}</td>
                                   <td>{{ innerChild.type }}</td>
