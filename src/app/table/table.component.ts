@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { debounceTime } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 
 interface Item {
   name: string;
@@ -19,7 +21,7 @@ interface Item {
   styleUrls: ['./table.component.css'],
 })
 export class TableWithSearchComponent {
-  selectAllRows = false;
+  selectAllRows: boolean = false;
   filteredData: Item[] = [];
   searchQuery: string = '';
   data: Item[] = [
@@ -243,6 +245,8 @@ export class TableWithSearchComponent {
       expanded: false,
     },
   ];
+  debounceSubscription: Subscription = new Subscription();
+  isRowSelected: boolean | undefined = false;
 
   constructor() {
     this.filteredData = this.data;
@@ -266,5 +270,45 @@ export class TableWithSearchComponent {
 
   selectedRowCount(): number {
     return this.data.filter((item: Item) => item.selected).length;
+  }
+
+  handleDebouncedInput(): void {
+    // Unsubscribe the previous debounce subscription, if it exists
+    if (this.debounceSubscription) {
+      this.debounceSubscription.unsubscribe();
+    }
+
+    // Subscribe to a new debounce stream
+    this.debounceSubscription = this.applyDebounce().subscribe(() => {
+      // Call your filtering method here
+      this.filterTable();
+    });
+  }
+
+  applyDebounce(): Observable<void> {
+    // Return the debounced observable
+    return this.debounceTime(300);
+  }
+
+  debounceTime(duration: number): Observable<void> {
+    return new Observable<void>((subscriber) => {
+      const timer = setTimeout(() => {
+        subscriber.next();
+        subscriber.complete();
+      }, duration);
+
+      return () => clearTimeout(timer);
+    });
+  }
+
+  selectRow(): void {
+    const selectedItem = this.data.find((item) => {
+      if (item.selected) {
+        return true;
+      }
+      return false;
+    });
+
+    this.isRowSelected = selectedItem?.selected;
   }
 }

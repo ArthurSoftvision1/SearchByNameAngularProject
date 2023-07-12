@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container my-5">
   <h1>Table with Search by Name</h1>
 
   <div class="input-group my-2 w-25">
@@ -7,21 +7,29 @@
       class="form-control border rounded-pill"
       type="search"
       [(ngModel)]="searchQuery"
-      (input)="filterTable()"
+      (input)="handleDebouncedInput()"
       placeholder="Search by name"
     />
   </div>
 
   <table class="table table-hover">
     <thead>
-      <tr>
-        <th appColumnResize>
+      <tr *ngIf="filteredData.length">
+        <th *ngIf="!isRowSelected" appColumnResize>
           <input
             type="checkbox"
             [(ngModel)]="selectAllRows"
             (change)="toggleSelectAll()"
           />
         </th>
+        <button
+          *ngIf="isRowSelected"
+          type="button"
+          class="btn btn-danger"
+          appColumnResize
+        >
+          Delete Multiple
+        </button>
         <th appColumnResize>Name</th>
         <th appColumnResize>Type</th>
         <th appColumnResize>Email</th>
@@ -29,6 +37,12 @@
         <th appColumnResize>Company Name</th>
       </tr>
     </thead>
+    <div
+      *ngIf="!filteredData.length"
+      class="d-flex justify-content-center fs-3 mt-5"
+    >
+      No result was found based on your search criteria!
+    </div>
     <tbody>
       <ng-container *ngFor="let item of filteredData">
         <tr
@@ -36,7 +50,11 @@
           (mouseout)="item.showButtons = false"
         >
           <td>
-            <input type="checkbox" [(ngModel)]="item.selected" />
+            <input
+              type="checkbox"
+              [(ngModel)]="item.selected"
+              (change)="selectRow()"
+            />
           </td>
           <td>
             <span [class.expanded]="item.expanded" class="arrow-icon"></span>
@@ -63,7 +81,7 @@
           <td>{{ item.phoneNo }}</td>
           <td>{{ item.companyName }}</td>
           <td>
-            <div *ngIf="item.showButtons">
+            <div *ngIf="item.showButtons && !item.selected">
               <button class="btn btn-primary btn-sm">Edit</button>
               <button class="btn btn-danger btn-sm ms-3">Delete</button>
             </div>
@@ -131,7 +149,13 @@
                       <td>{{ nestedChild.email }}</td>
                       <td>{{ nestedChild.phoneNo }}</td>
                       <td>{{ nestedChild.companyName }}</td>
-                      <td *ngIf="nestedChild.showButtons">
+                      <td
+                        *ngIf="
+                          nestedChild.showButtons &&
+                          !item.selected &&
+                          !nestedChild.selected
+                        "
+                      >
                         <div class="d-flex justify-content-center">
                           <button class="btn btn-danger btn-sm">Delete</button>
                         </div>

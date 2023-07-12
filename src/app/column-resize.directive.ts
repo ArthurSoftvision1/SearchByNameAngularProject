@@ -1,13 +1,13 @@
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[appColumnResize]'
+  selector: '[appColumnResize]',
 })
 export class ColumnResizeDirective {
   private startX: number = 0;
   private startWidth: number = 0;
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent): void {
@@ -26,7 +26,11 @@ export class ColumnResizeDirective {
     const offsetX = event.pageX - this.startX;
     const newWidth = this.startWidth + offsetX;
 
-    this.renderer.setStyle(this.elementRef.nativeElement, 'width', `${newWidth}px`);
+    this.renderer.setStyle(
+      this.elementRef.nativeElement,
+      'width',
+      `${newWidth}px`
+    );
   };
 
   onMouseUp = (): void => {
