@@ -15,3 +15,7 @@
 .nested-table {
   margin-left: 30px;
 }
+
+.actions-btns-wrapper {
+  border-top: 1px solid #dee2e6;
+}

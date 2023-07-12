@@ -20,7 +20,7 @@
             type="checkbox"
             [(ngModel)]="selectAllRows"
             (change)="toggleSelectAll()"
-          />
+          /><span class="ms-3">Select all </span>
         </th>
         <button
           *ngIf="isRowSelected"
@@ -80,10 +80,10 @@
           <td>{{ item.email }}</td>
           <td>{{ item.phoneNo }}</td>
           <td>{{ item.companyName }}</td>
-          <td>
+          <td class="py-0 pt-1 actions-btns-wrapper">
             <div *ngIf="item.showButtons && !item.selected">
               <button class="btn btn-primary btn-sm">Edit</button>
-              <button class="btn btn-danger btn-sm ms-3">Delete</button>
+              <button class="btn btn-danger btn-sm ms-2">Delete</button>
             </div>
           </td>
         </tr>
