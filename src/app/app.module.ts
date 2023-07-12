@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TableWithSearchComponent } from './table/table.component';
 import { FormsModule } from '@angular/forms';
+import { ColumnResizeDirective } from './column-resize.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TableWithSearchComponent
+    TableWithSearchComponent,
+    ColumnResizeDirective
   ],
   imports: [
     BrowserModule,
