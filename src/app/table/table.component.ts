@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { debounceTime } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 
 interface Item {
@@ -21,9 +20,9 @@ interface Item {
   styleUrls: ['./table.component.css'],
 })
 export class TableWithSearchComponent {
+  searchQuery: string = '';
   selectAllRows: boolean = false;
   filteredData: Item[] = [];
-  searchQuery: string = '';
   data: Item[] = [
     {
       name: 'Susan Boyle',
@@ -64,7 +63,7 @@ export class TableWithSearchComponent {
           address: '1 - 169 11th Street, 94103 San Francisco',
           children: [
             {
-              name: 'Children 21',
+              name: 'testtest',
               type: 'company',
               email: '21 - someone@gmail.com',
               phoneNo: '21 - +1 628 291 2098',
@@ -253,9 +252,23 @@ export class TableWithSearchComponent {
   }
 
   filterTable(): void {
-    this.filteredData = this.data.filter((item: Item) =>
-      item.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
+    this.filteredData = this.data.filter((item: Item) => this.filterItem(item));
+  }
+
+  filterItem(item: Item): boolean {
+    if (item.name.toLowerCase().includes(this.searchQuery.toLowerCase())) {
+      return true;
+    }
+
+    if (item.children) {
+      for (const child of item.children) {
+        if (this.filterItem(child)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   toggleSelectAll(): void {
@@ -298,13 +311,10 @@ export class TableWithSearchComponent {
   }
 
   selectRow(): void {
-    const selectedItem = this.data.find((item) => {
-      if (item.selected) {
-        return true;
-      }
-      return false;
-    });
+    // Find the first selected item in the filtered data
+    const selectedItem = this.filteredData.find((item) => item.selected);
 
-    this.isRowSelected = selectedItem?.selected;
+    // Update the isRowSelected flag based on whether a selected item was found
+    this.isRowSelected = selectedItem !== undefined;
   }
 }
