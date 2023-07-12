@@ -268,10 +268,6 @@ export class TableWithSearchComponent {
     item.expanded = !item.expanded;
   }
 
-  selectedRowCount(): number {
-    return this.data.filter((item: Item) => item.selected).length;
-  }
-
   handleDebouncedInput(): void {
     // Unsubscribe the previous debounce subscription, if it exists
     if (this.debounceSubscription) {
