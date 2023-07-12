@@ -1,0 +1,118 @@
+<div class="container">
+  <h1>Table with Search by Name</h1>
+  <input type="text" [(ngModel)]="searchQuery" (input)="filterTable()" class="form-control my-2 w-25" placeholder="Search by name">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>
+          <input type="checkbox" [(ngModel)]="selectAllRows" (change)="toggleSelectAll()">
+        </th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Company Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let item of filteredData">
+        <tr (mouseover)="item.showButtons = true" (mouseout)="item.showButtons = false">
+          <td>
+            <input type="checkbox" [(ngModel)]="item.selected">
+          </td>
+          <td>
+            <span [class.expanded]="item.expanded" class="arrow-icon"></span>
+            {{ item.name }}
+            <svg *ngIf="item.children" (click)="toggleRow(item); icon.classList.toggle('expanded')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16" #icon>
+              <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+            </svg>
+          </td>
+          <td>{{ item.type }}</td>
+          <td>{{ item.email }}</td>
+          <td>{{ item.phoneNo }}</td>
+          <td>{{ item.companyName }}</td>
+          <td>
+            <div *ngIf="item.showButtons">
+              <button class="btn btn-primary btn-sm">Edit</button>
+              <button class="btn btn-danger btn-sm ms-3">Delete</button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="item.expanded && item.children">
+          <td colspan="7">
+            <div class="nested-table">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>
+                      <input type="checkbox" [(ngModel)]="selectAllRows" (change)="toggleSelectAll()">
+                    </th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Company Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let nestedChild of item.children">
+                    <tr>
+                      <td>
+                        <input type="checkbox" [(ngModel)]="nestedChild.selected">
+                      </td>
+                      <td>
+                        <span [class.expanded]="nestedChild.expanded" class="arrow-icon"></span>
+                        {{ nestedChild.name }}
+                        <svg *ngIf="nestedChild.children" (click)="toggleRow(nestedChild); icon.classList.toggle('expanded')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16" #icon>
+                          <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+                        </svg>
+                      </td>
+                      <td>{{ nestedChild.type }}</td>
+                      <td>{{ nestedChild.email }}</td>
+                      <td>{{ nestedChild.phoneNo }}</td>
+                      <td>{{ nestedChild.companyName }}</td>
+                    </tr>
+                    <tr *ngIf="nestedChild.expanded && nestedChild.children && nestedChild.children.length > 0">
+                      <td colspan="7">
+                        <div class="nested-table">
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th>
+                                  <input type="checkbox" [(ngModel)]="selectAllRows" (change)="toggleSelectAll()">
+                                </th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Company Name</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <ng-container *ngFor="let innerChild of nestedChild.children">
+                                <tr>
+                                  <td>
+                                    <input type="checkbox" [(ngModel)]="innerChild.selected">
+                                  </td>
+                                  <td>{{ innerChild.name }}</td>
+                                  <td>{{ innerChild.type }}</td>
+                                  <td>{{ innerChild.email }}</td>
+                                  <td>{{ innerChild.phoneNo }}</td>
+                                  <td>{{ innerChild.companyName }}</td>
+                                </tr>
+                              </ng-container>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
