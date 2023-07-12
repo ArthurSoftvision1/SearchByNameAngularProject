@@ -1,6 +1,10 @@
 <div class="container">
   <h1>Table with Search by Name</h1>
-  <input type="text" [(ngModel)]="searchQuery" (input)="filterTable()" class="form-control my-2 w-25" placeholder="Search by name">
+
+  <div class="input-group my-2 w-25">
+    <input id="example-search-input" class="form-control border rounded-pill" type="search" [(ngModel)]="searchQuery" (input)="filterTable()" placeholder="Search by name">
+  </div>
+
   <table class="table table-hover">
     <thead>
       <tr>
